@@ -1,0 +1,106 @@
+---
+title: "p8105_hw1_jwc2177"
+output: github_document
+---
+
+# I. Problem 1
+
+### i. Initalizing RStudio
+Before we begin, let's load a few important libraries that will be helpful for us.
+
+```{r Loading Libraries}
+#Loading Libraries
+
+library(moderndive)
+library(readxl)
+library(haven)
+library(tidyverse)
+
+```
+
+### ii. Loading and Investigating the Data
+
+Let's use the "early_january_weather" data set. This data set is included in the 'moderndive' package so we simply need to load the data set instead of importing the data set anew. 
+
+```{r Getting Started with Data}
+# Getting Started with Data
+
+data(early_january_weather)
+
+```
+
+Now let's produce a simple summary of the data set.
+
+```{r Basic Data Summary}
+# Basic Data Summary
+
+summary(early_january_weather)
+
+```
+
+We can additionally use a function from a library that we haven't loaded. We can do this by identifying the library and using "::" between the library and the specific function.
+
+For us specifically, the skim() function skimr library provides additional information. 
+
+```{r Basic Loading Functions Independently }
+# Loading Functions Independently 
+
+skimr::skim(early_january_weather)
+
+```
+
+We can use this for a multitude of reasons. Though this data set uses good naming convention, we could use the clean_names() function from the janitor library to automatically. Because the names are already in satisfactory, while to code will be  shown, it will not be evaluated (i.e., not run).
+
+### ii. Data Summary
+
+We can see that from the data there were `r nrow(early_january_weather)` rows in the data set and `r ncol(early_january_weather)` columns in the data set. The mean temperature was 39.58 degrees centigrade, with the lowest temperature reaching 24.8 degrees and the highest temperature reaching 57.82 degrees. 
+
+### iii. Additional Operations
+
+```{r Cleaning Variables Names, eval=FALSE}
+# Cleaning Variable Names
+
+janitor::clean_names(early_january_weather)
+
+```
+
+We were able to achieve this last result by adding one component that tells the code chunk to not run this code.
+
+> {r Cleaning Variables Names, eval=FALSE}
+> 
+> Cleaning Variable Names
+> 
+> janitor::clean_names(early_january_weather)
+
+### iv. Graphs!
+
+Now that we're more familiar with the data, let's elucidate more information with a scatter plot. In this instance, we're comparing the how the time_hour variable affects the tempature variable, and we're grouping each data point by the humdity level. 
+
+```{r Our First Scatter Plot}
+# Our First Scatter Plot
+
+ggplot(early_january_weather, aes(x = time_hour, y = temp, color = humid)) + geom_point(size = 3)
+
+```
+The data is an overall strong, positive correlation but there are fluxes. As one might expect, during the night time the temperature drops and so does the humidity, and as the day time arrives so the temperature and humidity increases. 
+
+Interestingly on the right part if the graph before 14 January, we must presume there must have been a significant weather event. While the days previously repeated, this over this day the temperature and humidity stabilized regardless of time. Therefore, this could have been a severe multi-day storm that stabilized the weather. This is further reinforced by the spike after the stable period and the subsequent drop to normal temperature. 
+
+### V. Saving Our Work
+
+Now we can use another function to save out work. 
+
+```{r Saving Our Work}
+# Saving Our First Scatter Plot
+
+ggplot(early_january_weather, aes(x = time_hour, y = temp, color = humid)) + geom_point(size = 3)
+
+ggsave(
+  filename = early_january_tempatures_scatterplot,
+  plot = last_plot(),
+  scale = 1,
+  width = NA,
+  height = NA,
+  )
+
+```
